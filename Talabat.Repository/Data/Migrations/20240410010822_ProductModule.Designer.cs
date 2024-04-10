@@ -11,7 +11,7 @@ using Talabat.Repository.Data;
 namespace Talabat.Repository.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240410002553_ProductModule")]
+    [Migration("20240410010822_ProductModule")]
     partial class ProductModule
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
