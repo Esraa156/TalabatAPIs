@@ -10,9 +10,19 @@ namespace TalabatProject.APIs.Controllers
 	{
 		private readonly IGenericRepository<Product> genericRep;
 
-		public ProductController(IGenericRepository<Product>genericRep ) 
+		public ProductController(IGenericRepository<Product> genericRep)
 		{
 			this.genericRep = genericRep;
+		}
+		[HttpGet]
+
+		public async Task<IActionResult> GetProducts()
+		{
+
+			var Products = await genericRep.GetAllAsync();
+			//OkObjectResult result=new OkObjectResult(Products);
+			return Ok(Products);
+
 		}
 	}
 }
