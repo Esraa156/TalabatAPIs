@@ -24,5 +24,14 @@ namespace TalabatProject.APIs.Controllers
 			return Ok(Products);
 
 		}
+
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Product>> GetProduct(int id)
+		{
+			var product = await genericRep.GetAsync(id);
+			if (product is null)
+				return NotFound(new { Message = "Not Found", StatusCode = 404 }); //404
+			return Ok(product); //200
+		}
 	}
 }

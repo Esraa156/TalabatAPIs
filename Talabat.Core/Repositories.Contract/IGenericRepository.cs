@@ -11,7 +11,7 @@ namespace Talabat.Core.Repositories.Contract
 	{
 
 		Task<IEnumerable<T>> GetAllAsync();
-		Task<T?> Get(int id);
+		Task<T?> GetAsync(int id);
 
 
 	}
