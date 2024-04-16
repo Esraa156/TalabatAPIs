@@ -41,7 +41,7 @@ namespace Talabat.APIs
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
 
 
-			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(IGenericRepository<>));
+			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
 
