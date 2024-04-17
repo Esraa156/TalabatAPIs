@@ -9,7 +9,7 @@ namespace Talabat.APIs
 	public class Program
 	{
 		//Entery Point
-		public static async Task  Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			//StoreContext dbcontext=/*new StoreContext()*/;
 			var webApplicationBuilder = WebApplication.CreateBuilder(args);
@@ -26,7 +26,7 @@ namespace Talabat.APIs
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationBuilder.Services.AddEndpointsApiExplorer();
 			webApplicationBuilder.Services.AddSwaggerGen();
-			webApplicationBuilder.Services.AddDbContext<StoreContext>(options=>
+			webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
 			{
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 
@@ -34,7 +34,7 @@ namespace Talabat.APIs
 
 
 
-				});
+			});
 
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
@@ -52,9 +52,9 @@ namespace Talabat.APIs
 			var services = Scopped.ServiceProvider;
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
-			
-			
-			var LoggerFactory=services.GetRequiredService<ILoggerFactory>();
+
+
+			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			try
 			{
 				await _dbContext.Database.MigrateAsync();//Update DataBase
@@ -64,8 +64,8 @@ namespace Talabat.APIs
 			}
 			catch (Exception ex)
 			{
-				var logger=LoggerFactory.CreateLogger<Program>();
-				logger.LogError(ex,"An Error Has Been Occured during apply migration");
+				var logger = LoggerFactory.CreateLogger<Program>();
+				logger.LogError(ex, "An Error Has Been Occured during apply migration");
 				Console.WriteLine(ex);
 
 			}
@@ -87,7 +87,7 @@ namespace Talabat.APIs
 			app.Run();
 
 
-			
+
 
 
 		}
