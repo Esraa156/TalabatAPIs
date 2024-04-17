@@ -4,6 +4,7 @@ using Talabat.Core.EmployeeSpecification;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications.ProductSpecification;
+using TalabatProject.APIs.Errors;
 
 namespace TalabatProject.APIs.Controllers
 {
@@ -35,7 +36,7 @@ namespace TalabatProject.APIs.Controllers
 			var employee = await _employeerepo.GetAsyncSpec(spec);
 
 			if (employee is null)
-				return NotFound();
+				return NotFound(new ApiResponse(404));
 			return Ok(employee); //200
 		}
 	}

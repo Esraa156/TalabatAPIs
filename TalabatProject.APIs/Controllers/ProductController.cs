@@ -6,6 +6,7 @@ using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications;
 using Talabat.Core.Specifications.ProductSpecification;
 using TalabatProject.APIs.DTOs;
+using TalabatProject.APIs.Errors;
 
 namespace TalabatProject.APIs.Controllers
 {
@@ -41,7 +42,7 @@ namespace TalabatProject.APIs.Controllers
 
 			var product = await genericRep.GetAsyncSpec(spec);
 			if (product is null)
-				return NotFound(new { Message = "Not Found", StatusCode = 404 }); //404
+				return NotFound(new ApiResponse(404) ); //404
 			return Ok(_mapper.Map<Product,ProductToReturnDto>(product)); //200
 		}
 	}
