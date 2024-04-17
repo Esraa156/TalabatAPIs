@@ -17,6 +17,7 @@ namespace Talabat.Repository.Data
 
 			if (_dbcontext.ProductBrands.Count() == 0)
 			{
+
 				var BrandData = File.ReadAllText("../Talabat.Repository/Data/DataSeeding/brands.json");
 				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(BrandData);
 				if (brands?.Count() > 0)
@@ -54,6 +55,23 @@ namespace Talabat.Repository.Data
 			await _dbcontext.SaveChangesAsync();
 
 }
+			}
+		if(_dbcontext.Products.Count()==0)
+			{
+				var productsData = File.ReadAllText("../Talabat.Repository/Data/DataSeeding/products.json");
+
+				var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+				if (products?.Count() > 0)
+				{
+
+					foreach (var prod in products)
+					{
+						_dbcontext.Set<Product>().Add(prod);
+
+					}
+					await _dbcontext.SaveChangesAsync();
+
+				}
 			}
 		}
 	}
