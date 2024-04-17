@@ -86,6 +86,7 @@ webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(Ge
 			app.UseAuthorization();
 
 			app.MapControllers();
+			app.UseStaticFiles();
 			#endregion
 			app.Run();
 
