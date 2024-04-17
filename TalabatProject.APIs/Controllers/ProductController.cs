@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications;
 using Talabat.Core.Specifications.ProductSpecification;
+using TalabatProject.APIs.DTOs;
 
 namespace TalabatProject.APIs.Controllers
 {
@@ -14,19 +16,21 @@ namespace TalabatProject.APIs.Controllers
 	public class ProductController : ControllerBase
 	{
 		private readonly IGenericRepository<Product> genericRep;
+		private readonly IMapper _mapper;
 
-		public ProductController(IGenericRepository<Product> genericRep)
+		public ProductController(IGenericRepository<Product> genericRep,IMapper mapper)
 		{
 			this.genericRep = genericRep;
+			_mapper = mapper;
 		}
 		[HttpGet]
-		public async Task<IActionResult> GetProducts()
+		public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts()
 		{
 			var spec = new ProductWithBrandAndCategorySpecification();
 
 			var Products = await genericRep.GetAllAsyncSpec(spec);
 			//OkObjectResult result=new OkObjectResult(Products);
-			return Ok(Products);
+			return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(Products));
 
 		 }
 
@@ -38,7 +42,7 @@ namespace TalabatProject.APIs.Controllers
 			var product = await genericRep.GetAsyncSpec(spec);
 			if (product is null)
 				return NotFound(new { Message = "Not Found", StatusCode = 404 }); //404
-			return Ok(product); //200
+			return Ok(_mapper.Map<Product,ProductToReturnDto>(product)); //200
 		}
 	}
 }
