@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Helpers;
 
 namespace Talabat.APIs
@@ -38,13 +40,33 @@ namespace Talabat.APIs
 			});
 			webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 
+			webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
 
-//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
-//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
-//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
+			{
+				options.InvalidModelStateResponseFactory = (actionContext) =>
+				{
+					var error = actionContext.ModelState.Where(P => P.Value.Errors.Count() > 0)
+																						.SelectMany(P => P.Value.Errors)
+																						.Select(E => E.ErrorMessage)
+																						.ToArray();
+					var response = new ApiValidationErrorResponse()
+					{
+						Errors = error
+					};
+
+					return new BadRequestObjectResult(response);
+
+				};
 
 
-webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			});
+
+			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
+			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
+			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
+
+
+			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
 
