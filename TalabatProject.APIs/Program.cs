@@ -4,8 +4,10 @@ using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+
 using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Helpers;
+using TalabatProject.APIs.Middlewares;
 
 namespace Talabat.APIs
 {
@@ -97,6 +99,8 @@ namespace Talabat.APIs
 
 			#region Configure Kestrel Middlewares
 			// Configure the HTTP request pipeline.
+			app.UseMiddleware<ExceptionMiddleware>();
+
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
