@@ -8,6 +8,7 @@ using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using TalabatProject.APIs.Errors;
+using TalabatProject.APIs.Extensions;
 using TalabatProject.APIs.Helpers;
 using TalabatProject.APIs.Middlewares;
 
@@ -29,10 +30,9 @@ namespace Talabat.APIs
 
 			// Add services to the container.
 
-			webApplicationBuilder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			webApplicationBuilder.Services.AddEndpointsApiExplorer();
-			webApplicationBuilder.Services.AddSwaggerGen();
+			
+			webApplicationBuilder.Services.AddSwaggerServices();
 			webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>
 			{
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
@@ -42,36 +42,7 @@ namespace Talabat.APIs
 
 
 			});
-			webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
-
-			webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
-
-			{
-				options.InvalidModelStateResponseFactory = (actionContext) =>
-				{
-					var error = actionContext.ModelState.Where(P => P.Value.Errors.Count() > 0)
-																						.SelectMany(P => P.Value.Errors)
-																						.Select(E => E.ErrorMessage)
-																						.ToArray();
-					var response = new ApiValidationErrorResponse()
-					{
-						Errors = error
-					};
-
-					return new BadRequestObjectResult(response);
-
-				};
-
-
-			});
-
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
-
-
-			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+			webApplicationBuilder.Services.AddApplicationServices();
 
 
 			#endregion
@@ -133,8 +104,8 @@ namespace Talabat.APIs
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddleware();
+
 			}
 
 			app.UseStatusCodePagesWithReExecute("/errors/{0}");
