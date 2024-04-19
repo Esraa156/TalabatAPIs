@@ -44,6 +44,8 @@ namespace TalabatProject.APIs.Controllers
 		{
 			return Ok();
 		}
+		[HttpGet("Unauthorized/{id}")]
+
 		public ActionResult Unauthorized() //ValidationError
 		{
 			return Unauthorized(new ApiResponse(401));    
