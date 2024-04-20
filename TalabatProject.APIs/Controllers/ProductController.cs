@@ -32,9 +32,9 @@ namespace TalabatProject.APIs.Controllers
 			_mapper = mapper;
 		}
 		[HttpGet]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts(string? sort,int?brandId,int?categoryId)
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
 		{
-			var spec = new ProductWithBrandAndCategorySpecification(sort, brandId, categoryId);
+			var spec = new ProductWithBrandAndCategorySpecification(specParams);
 
 			var Products = await genericRep.GetAllAsyncSpec(spec);
 			//OkObjectResult result=new OkObjectResult(Products);

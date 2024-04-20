@@ -12,13 +12,13 @@ namespace Talabat.Core.Specifications.ProductSpecification
 
 		//This Constructor is used for Creating an Object .That object will be used to Get
 		//AllProducts
-		public ProductWithBrandAndCategorySpecification(string ?sort, int? brandId, int? categoryId) 
+		public ProductWithBrandAndCategorySpecification(ProductSpecParams specParams) 
 			
 			:base(P=>
 				
 				 
-				 (!brandId.HasValue || P.BrandId== brandId) &&
-				(!categoryId.HasValue || categoryId== categoryId)
+				 (!specParams.brandId.HasValue || P.BrandId== specParams.brandId) &&
+				(!specParams.categoryId.HasValue || P.CategoryId == specParams.categoryId)
 				 
 				 
 				 
@@ -28,9 +28,9 @@ namespace Talabat.Core.Specifications.ProductSpecification
 
 
 			AddIncludes();
-			if (!string.IsNullOrEmpty(sort))
+			if (!string.IsNullOrEmpty(specParams.sort))
 			{
-				switch (sort)
+				switch (specParams.sort)
 				{
 					case "priceAsc":
 						//OrderBy = p => p.Price;
@@ -51,10 +51,13 @@ namespace Talabat.Core.Specifications.ProductSpecification
 			{
 				AddOrderBy(p => p.Name);
 
+		
 			}
+			ApplyPagination((specParams.pageIndex-1)*specParams.PageSize, specParams.PageSize);
+		
 		}
 
-
+		
 			
 
 		//This Constructor is used for Creating an Object .That object will be used to Get
