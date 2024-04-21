@@ -22,5 +22,6 @@ namespace Talabat.Core.Specifications
 
 		public bool IsPaginationedEnabled {  get; set; }
 
+
 	}
 }

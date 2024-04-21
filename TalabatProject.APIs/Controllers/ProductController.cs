@@ -7,6 +7,7 @@ using Talabat.Core.Specifications;
 using Talabat.Core.Specifications.ProductSpecification;
 using TalabatProject.APIs.DTOs;
 using TalabatProject.APIs.Errors;
+using TalabatProject.APIs.Helpers;
 
 namespace TalabatProject.APIs.Controllers
 {
@@ -32,13 +33,17 @@ namespace TalabatProject.APIs.Controllers
 			_mapper = mapper;
 		}
 		[HttpGet]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
+		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
 		{
 			var spec = new ProductWithBrandAndCategorySpecification(specParams);
 
 			var Products = await genericRep.GetAllAsyncSpec(spec);
 			//OkObjectResult result=new OkObjectResult(Products);
-			return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products));
+			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products);
+			var countSpec = new ProductWithFilterationForCountSpecefications(specParams);
+			
+			var count = await genericRep.GetCountAsync(countSpec);
+			return Ok(new Pagination<ProductToReturnDto>(specParams.pageIndex, specParams.PageSize,data,count));
 
 		 }
 		[ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
