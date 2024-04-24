@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System.Net;
 using System.Text.Json;
 using Talabat.Core.Entities;
@@ -53,8 +54,13 @@ namespace Talabat.APIs
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
 
-
-			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+                var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(connection);
+            }
+            );
+            var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			var logger = LoggerFactory.CreateLogger<Program>();
 
 			try
