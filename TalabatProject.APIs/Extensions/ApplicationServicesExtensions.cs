@@ -11,7 +11,11 @@ namespace TalabatProject.APIs.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
-			services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddAutoMapper(typeof(MappingProfiles));
 
 			services.Configure<ApiBehaviorOptions>(options =>
 
@@ -34,14 +38,13 @@ namespace TalabatProject.APIs.Extensions
 
 			});
 
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
-			//webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>, GenericRepository<ProductCategory>>();
 
+           
 
-			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-			return services;
+            return services;
 
 		}
 	}

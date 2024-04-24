@@ -6,10 +6,11 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Talabat.Core.Entities;
+using Talabat.Core.Repositories.Contract;
 
 namespace Talabat.Repository
 {
-    internal class BasketRepository
+    public class BasketRepository:IBasketRepository
     {
         private IDatabase _database;
         public BasketRepository(IConnectionMultiplexer redis)

@@ -43,7 +43,13 @@ namespace Talabat.APIs
 
 
 			});
-			webApplicationBuilder.Services.AddApplicationServices();
+            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+                var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(connection);
+            }
+            );
+            webApplicationBuilder.Services.AddApplicationServices();
 
 
 			#endregion
@@ -54,13 +60,8 @@ namespace Talabat.APIs
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
 
-            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
-            {
-                var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
-                return ConnectionMultiplexer.Connect(connection);
-            }
-            );
-            var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			var logger = LoggerFactory.CreateLogger<Program>();
 
 			try
