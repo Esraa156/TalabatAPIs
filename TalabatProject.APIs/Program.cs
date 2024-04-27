@@ -9,6 +9,7 @@ using System.Text.Json;
 using Talabat.Core.Entities;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.ServiceContract;
 using Talabat.Repository;
 using Talabat.Repository._Identity;
 using Talabat.Repository.Data;
@@ -65,6 +66,7 @@ namespace Talabat.APIs
 
 			})
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+			webApplicationBuilder.Services.AddScoped(typeof(IAuthService),typeof(AuthService));
 			#endregion
 var app = webApplicationBuilder.Build();
 			using var Scopped = app.Services.CreateScope();
