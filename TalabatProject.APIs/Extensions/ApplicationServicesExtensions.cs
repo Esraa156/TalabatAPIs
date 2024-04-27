@@ -5,7 +5,8 @@ using Talabat.Repository;
 using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Helpers;
 
-namespace TalabatProject.APIs.Extensions
+namespace 
+	TalabatProject.APIs.Extensions
 {
 	public static class ApplicationServicesExtensions
 	{

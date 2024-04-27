@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System.Net;
 using System.Text.Json;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository._Identity;
@@ -57,10 +60,13 @@ namespace Talabat.APIs
             }
             );
             webApplicationBuilder.Services.AddApplicationServices();
+			webApplicationBuilder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+			{
 
-
+			})
+				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 			#endregion
-			var app = webApplicationBuilder.Build();
+var app = webApplicationBuilder.Build();
 			using var Scopped = app.Services.CreateScope();
 
 			var services = Scopped.ServiceProvider;
@@ -77,7 +83,8 @@ namespace Talabat.APIs
 				await _dbContext.Database.MigrateAsync();//Update DataBase
 				await _IdentitydbContext.Database.MigrateAsync();//Update DataBase
 
-
+				var _userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+				await ApplicationIdentityDbContextSeed.SeedUsersAsync(_userManager);
 				await StoreContextSeed.SeedAsync(_dbContext);//DataSeeding
 
 			}
