@@ -7,6 +7,7 @@ using System.Text.Json;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
+using Talabat.Repository._Identity;
 using Talabat.Repository.Data;
 using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Extensions;
@@ -15,7 +16,7 @@ using TalabatProject.APIs.Middlewares;
 
 namespace Talabat.APIs
 {
-	public class Program
+    public class Program
 	{
 		//Entery Point
 		public static async Task Main(string[] args)
@@ -43,7 +44,13 @@ namespace Talabat.APIs
 
 
 			});
-            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+			webApplicationBuilder.Services.AddDbContext<ApplicationIdentityDbContext>(options
+				=>
+			{
+				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
+			});
+
+			webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
             {
                 var connection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(connection);
@@ -60,6 +67,7 @@ namespace Talabat.APIs
 
 			var _dbContext = services.GetRequiredService<StoreContext>();
 
+			var _IdentitydbContext = services.GetRequiredService<ApplicationIdentityDbContext>();
 
 			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			var logger = LoggerFactory.CreateLogger<Program>();
@@ -67,6 +75,8 @@ namespace Talabat.APIs
 			try
 			{
 				await _dbContext.Database.MigrateAsync();//Update DataBase
+				await _IdentitydbContext.Database.MigrateAsync();//Update DataBase
+
 
 				await StoreContextSeed.SeedAsync(_dbContext);//DataSeeding
 

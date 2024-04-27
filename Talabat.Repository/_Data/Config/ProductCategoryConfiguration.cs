@@ -9,11 +9,11 @@ using Talabat.Core.Entities;
 
 namespace Talabat.Repository.Data.Config
 {
-	internal class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
-	{
-		public void Configure(EntityTypeBuilder<ProductCategory> builder)
-		{
-			builder.Property(C => C.Name).IsRequired();
-		}
-	}
+    internal class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
+    {
+        public void Configure(EntityTypeBuilder<ProductCategory> builder)
+        {
+            builder.Property(C => C.Name).IsRequired();
+        }
+    }
 }

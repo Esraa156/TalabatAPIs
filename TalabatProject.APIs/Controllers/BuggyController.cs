@@ -5,7 +5,7 @@ using TalabatProject.APIs.Errors;
 
 namespace TalabatProject.APIs.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class BuggyController : ControllerBase
 	{
