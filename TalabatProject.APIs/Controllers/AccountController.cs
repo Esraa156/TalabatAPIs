@@ -7,6 +7,7 @@ using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
 using TalabatProject.APIs.DTOs;
 using TalabatProject.APIs.Errors;
+using TalabatProject.APIs.Extensions;
 
 namespace TalabatProject.APIs.Controllers
 {
@@ -52,7 +53,7 @@ namespace TalabatProject.APIs.Controllers
 					{
 						DisplayName = user.DisplayName,
 						Email = user.Email,
-						Token = await _authService.CreateTokenAsync(user,_userManager)
+						Token = await _authService.CreateTokenAsync(user, _userManager)
 
 
 					});
@@ -70,43 +71,55 @@ namespace TalabatProject.APIs.Controllers
 				UserName = model.Email.Split("@")[0],
 				PhoneNumber = model.Phone
 			};
-			var result=await _userManager.CreateAsync(user,model.Password);
+			var result = await _userManager.CreateAsync(user, model.Password);
 			if (!result.Succeeded)
-			
-				return BadRequest(new ApiValidationErrorResponse(){Errors=result.Errors.Select(E=>E.Description)});
 
-			
-				return Ok(new UserDto
-				{
-					DisplayName = user.DisplayName,
-					Email = user.Email,
-					Token = await _authService.CreateTokenAsync(user, _userManager)
+				return BadRequest(new ApiValidationErrorResponse() { Errors = result.Errors.Select(E => E.Description) });
 
 
-				});
-			}
+			return Ok(new UserDto
+			{
+				DisplayName = user.DisplayName,
+				Email = user.Email,
+				Token = await _authService.CreateTokenAsync(user, _userManager)
+
+
+			});
+		}
 
 		[Authorize]
 		[HttpGet] //GET : /api/Account
 		public async Task<ActionResult<UserDto>> GetCurrentUser()
 		{
 			var email = User.FindFirstValue(ClaimTypes.Email);
-			var user=await _userManager.FindByEmailAsync(email);
+			var user = await _userManager.FindByEmailAsync(email);
 
 			return Ok(new UserDto()
 			{
 
-				DisplayName = user?.DisplayName??string.Empty,
-				Email=user?.Email ?? string.Empty,
-				Token=await _authService.CreateTokenAsync(user,_userManager)
+				DisplayName = user?.DisplayName ?? string.Empty,
+				Email = user?.Email ?? string.Empty,
+				Token = await _authService.CreateTokenAsync(user, _userManager)
 
 
 
-			}) ;
+			});
 		}
+
+
+		[Authorize]
+		[HttpGet("address")] //GET : /api/Account/Address
+		public async Task<ActionResult<Address>> GetUserAddress()
+		{
+			var user = await _userManager.FindUserWithAddress(User);
+
+
+			return Ok(user.Address);
+
 		}
 
 
 
 	}
-	
+
+}
