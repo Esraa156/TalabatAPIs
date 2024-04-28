@@ -33,8 +33,10 @@ namespace Talabat.APIs
 
 			#region Configure Service
 			// Add services to the DI container.
-
-			webApplicationBuilder.Services.AddControllers();
+			webApplicationBuilder.Services.AddControllers().AddNewtonsoftJson(options=>
+			{
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			});
 			//Rejister Required Web APIs services to the DI container.
 
 			// Add services to the container.
