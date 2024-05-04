@@ -17,7 +17,7 @@ namespace Talabat.Repository._Data.Config.Order_Config
 			builder.OwnsOne(orderitem => orderitem.Product, X => X.WithOwner());
 
 			builder.Property(orderitem => orderitem.Price)
-				.HasColumnType("decimal(12,2");
+				.HasColumnType("decimal(12,2)");
 
 		}
 	}

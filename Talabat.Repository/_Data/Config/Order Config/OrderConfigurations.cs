@@ -24,9 +24,7 @@ namespace Talabat.Repository._Data.Config.Order_Config
 				(OStatus) => (OrderStatus)Enum.Parse(typeof(OrderStatus), OStatus)
 
 				);
-			builder.HasOne(order => order.DeliveryMethod)
-				.WithOne();
-
+			
 
 			//builder.HasIndex("DeliveryMethodId").IsUnique(true);
 

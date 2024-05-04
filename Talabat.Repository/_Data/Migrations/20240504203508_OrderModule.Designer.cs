@@ -12,7 +12,7 @@ using Talabat.Repository.Data;
 namespace Talabat.Repository.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240504194215_OrderModule")]
+    [Migration("20240504203508_OrderModule")]
     partial class OrderModule
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace Talabat.Repository.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(12,2");
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("DeliveryTime")
                         .IsRequired()
@@ -55,11 +55,17 @@ namespace Talabat.Repository.Data.Migrations
             modelBuilder.Entity("Talabat.Core.Entities.Order_Aggregate.Order", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BuyerEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeliveryMethodId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
@@ -77,6 +83,8 @@ namespace Talabat.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeliveryMethodId");
+
                     b.ToTable("Orders");
                 });
 
@@ -92,7 +100,7 @@ namespace Talabat.Repository.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(12,2");
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -181,9 +189,8 @@ namespace Talabat.Repository.Data.Migrations
                 {
                     b.HasOne("Talabat.Core.Entities.Order_Aggregate.DeliveryMethod", "DeliveryMethod")
                         .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .HasForeignKey("DeliveryMethodId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("Talabat.Core.Entities.Order_Aggregate.Address", "ShippingAddress", b1 =>
                         {
