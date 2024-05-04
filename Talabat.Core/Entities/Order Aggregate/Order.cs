@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Talabat.Core.Entities.Order_Aggregate
 {
-	public class Order
+	public class Order:BaseEntity
 	{
 		public string BuyerEmail { get; set; } = null!;
 		 
@@ -17,9 +17,9 @@ namespace Talabat.Core.Entities.Order_Aggregate
 
 		public Address ShippingAddress { get; set; }= null!;
 
-		public int DeliveryMethodId {  get; set; }	 // Foreign Key
+		//public int DeliveryMethodId {  get; set; }	 // Foreign Key
 		
-		public DeliveryMethod DeliveryMethod { get; set; } = null!; //Navigational Property [ONE]
+		public DeliveryMethod? DeliveryMethod { get; set; } = null!; //Navigational Property [ONE]
 
 
 		public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); //Navigational Property	
