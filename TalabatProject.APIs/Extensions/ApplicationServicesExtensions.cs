@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.Core.Repositories.Contract;
-using Talabat.Core.ServiceContract;
 using Talabat.Repository;
+using Talabat.Service.ServiceContract.OrderService;
 using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Helpers;
 
-namespace 
-	TalabatProject.APIs.Extensions
+namespace
+    TalabatProject.APIs.Extensions
 {
-	public static class ApplicationServicesExtensions
+    public static class ApplicationServicesExtensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
