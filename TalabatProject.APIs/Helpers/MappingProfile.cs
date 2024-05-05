@@ -23,7 +23,20 @@ namespace TalabatProject.APIs.Helpers
 			CreateMap<Talabat.Core.Entities.Order_Aggregate.Address, AddressDto>().ReverseMap();
 
 			CreateMap<AddressDto, Talabat.Core.Entities.Order_Aggregate.Address>();
-        }
+			CreateMap<Order, OrderToReturnDto>()
+				.ForMember(d => d.DeliveryMethod, O => O.MapFrom(O => O.DeliveryMethod.ShortName))
+				.ForMember(d => d.DeliveryMethodCost, O => O.MapFrom(O => O.DeliveryMethod.Cost));
+
+
+			CreateMap<OrderItem, OrderItemDto>()
+				.ForMember(d => d.ProductName, O => O.MapFrom(O => O.Product.ProductName))
+				.ForMember(d => d.PictureUrl, O => O.MapFrom(O => O.Product.PictureUrl))
+				.ForMember(d => d.ProductId, O => O.MapFrom(O => O.Product.ProductId))
+				.ForMember(d => d.PictureUrl, O => O.MapFrom<OrderItemPictureUrlResolver>());
+
+
+
+		}
 
 	}
 }
