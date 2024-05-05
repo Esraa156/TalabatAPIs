@@ -82,6 +82,7 @@ namespace Talabat.Service.ServiceContract.OrderService
 
 
 
+			throw new NotImplementedException();
 
 		}
 
