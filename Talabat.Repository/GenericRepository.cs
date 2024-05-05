@@ -52,5 +52,14 @@ namespace Talabat.Repository
 		{
 			return await ApplySpecifications(spec).CountAsync();
 		}
+
+		public void Add(T entity)
+		=>_dbcontext.Set<T>().Add(entity);
+
+		public void Update(T entity)
+		=>_dbcontext.Set<T>().Update(entity);
+
+		public void Delete(T entity)
+		=>_dbcontext.Set<T>().Remove(entity);
 	}
 }

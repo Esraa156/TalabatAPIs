@@ -12,7 +12,7 @@ using System.Text.Json;
 using Talabat.Core.Entities;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositories.Contract;
-using Talabat.Core.ServiceContract;
+using Talabat.Service.ServiceContract;
 using Talabat.Repository;
 using Talabat.Repository._Identity;
 using Talabat.Repository.Data;
