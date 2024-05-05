@@ -61,5 +61,7 @@ namespace Talabat.Repository
 
 		public void Delete(T entity)
 		=>_dbcontext.Set<T>().Remove(entity);
+
+	
 	}
 }
