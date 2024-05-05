@@ -10,7 +10,7 @@ namespace TalabatProject.APIs.DTOs
 		[Required]
 
 
-		public string LnameName { get; set; } = null!;
+		public string LastName { get; set; } = null!;
 		[Required]
 
 		public string Street { get; set; } = null!;

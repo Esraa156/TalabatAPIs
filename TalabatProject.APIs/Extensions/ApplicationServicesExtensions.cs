@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
+using Talabat.Service.ServiceContract;
 using Talabat.Service.ServiceContract.OrderService;
 using TalabatProject.APIs.Errors;
 using TalabatProject.APIs.Helpers;
@@ -16,6 +17,8 @@ namespace
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+
+			services.AddScoped(typeof(IOrderService),typeof(OrderService));
 
 			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
