@@ -119,11 +119,11 @@ namespace Talabat.Service.ServiceContract.OrderService
 			return Order;
 		}
 
-		Task<IReadOnlyList<DeliveryMethod>> IOrderService.GetDeliveryMethodsAsync()
-		{
-			throw new NotImplementedException();
-		}
-
+		async Task<IReadOnlyList<DeliveryMethod>> IOrderService.GetDeliveryMethodsAsync()
 		
+			=>await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync();
+		
+
+
 	}
 }

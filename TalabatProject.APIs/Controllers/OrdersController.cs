@@ -59,7 +59,12 @@ namespace TalabatProject.APIs.Controllers
 			if (order is null) return NotFound(new ApiResponse(404));
 			return Ok(_mapper.Map<Order, OrderToReturnDto>(order));
 		}
-
+		[HttpGet("deliverymethods")]
+		public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+		{
+			var deliveryMethod = await _orderService.GetDeliveryMethodsAsync();
+			return Ok(deliveryMethod);
+		}
 
 	}
 }
